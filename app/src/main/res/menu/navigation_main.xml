@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="HardcodedText">
+    <group >
+        <item android:id="@+id/nav_PhieuMuon"
+            android:title="Quản lý phiếu mượn"/>
+        <item android:id="@+id/nav_LoaiSach"
+            android:title="Quản lý loại sách"/>
+        <item android:id="@+id/nav_Sach"
+            android:title="Quản lý sách"/>
+        <item android:id="@+id/nav_ThanhVien"
+            android:title="Quản lý thành viên"/>
+    </group>
+
+    <item android:title="Thống kê">
+        <menu>
+            <item android:id="@+id/nav_Top10"
+                android:title="Top 10 sách mượn nhiều nhất"/>
+            <item android:id="@+id/nav_DoanhThu"
+                android:title="Doanh thu"/>
+        </menu>
+    </item>
+
+
+    <item android:title="Người dùng">
+        <menu>
+            <item android:id="@+id/nav_DoiMatKhau"
+                android:title="Top 10 sách mượn nhiều nhất"/>
+            <item android:id="@+id/nav_DangXuat"
+                android:title="Doanh thu"/>
+        </menu>
+    </item>
+
+</menu>
