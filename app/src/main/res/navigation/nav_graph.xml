@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/fragmentThanhVien">
+
+    <fragment
+        android:id="@+id/fragmentThanhVien"
+        android:name="com.example.duanmau.Activity.FragmentThanhVien"
+        android:label="fragment_thanh_vien"
+        tools:layout="@layout/fragment_thanh_vien" />
+    <fragment
+        android:id="@+id/fragmentTrangChinh"
+        android:name="com.example.duanmau.Activity.FragmentTrangChinh"
+        android:label="fragment_trang_chinh"
+        tools:layout="@layout/fragment_trang_chinh" >
+        <action
+            android:id="@+id/action_fragmentTrangChinh_to_fragmentThanhVien"
+            app:destination="@id/fragmentThanhVien" />
+    </fragment>
+</navigation>
