@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageButton
+        android:id="@+id/imgBtn_dialogAvatarSuaTV"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="65dp"
+        android:background="@null"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/icon_adduser" />
+
+    <EditText
+        android:id="@+id/edt_dialogTenSuaTV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="40dp"
+        android:layout_marginTop="25dp"
+        android:ems="10"
+        android:hint="Nhập tên"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imgBtn_dialogAvatarSuaTV" />
+
+    <EditText
+        android:id="@+id/edt_dialogNamSinhSuaTV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="40dp"
+        android:layout_marginTop="12dp"
+        android:ems="10"
+        android:hint="Nhập năm sinh"
+        android:inputType="textPersonName"
+        app:layout_constraintStart_toStartOf="@+id/edt_dialogTenSuaTV"
+        app:layout_constraintTop_toBottomOf="@+id/edt_dialogTenSuaTV" />
+
+    <EditText
+        android:id="@+id/edt_dialogMKSuaTV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="40dp"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="Nhập mật khẩu mới"
+        android:inputType="textPersonName"
+        app:layout_constraintStart_toStartOf="@+id/edt_dialogNamSinhSuaTV"
+        app:layout_constraintTop_toBottomOf="@+id/edt_dialogNamSinhSuaTV" />
+
+    <Button
+        android:id="@+id/btn_dialogGuiSuaTV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="40dp"
+        android:layout_marginTop="22dp"
+        android:text="Cập nhật"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edt_dialogMKSuaTV" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

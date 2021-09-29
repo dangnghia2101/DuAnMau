@@ -80,16 +80,19 @@ public class LoginActivity extends AppCompatActivity {
         reference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                int check = 0;
                 if(task.isSuccessful()){
                     QuerySnapshot snapshot = task.getResult();
                     for(QueryDocumentSnapshot doc: snapshot){
                         if(userName.equals(doc.get("SDT")) && pass.equals(doc.get("MatKhau"))){
                             startActivity(new Intent(LoginActivity.this, MainActivity.class));
                             remeberUser(userName, pass, cb_luuTk.isChecked());
+                            check = 1;
                             break;
-                        }else{
-                            Toast.makeText(LoginActivity.this, "Tài khoản hoặc mật khẩu không tồn tại", Toast.LENGTH_SHORT).show();
                         }
+                    }
+                    if(check == 0){
+                        Toast.makeText(LoginActivity.this, "Tài khoản hoặc mật khẩu không tồn tại", Toast.LENGTH_SHORT).show();
                     }
                 }
             }

@@ -19,4 +19,6 @@
             android:id="@+id/action_fragmentTrangChinh_to_fragmentThanhVien"
             app:destination="@id/fragmentThanhVien" />
     </fragment>
+
+
 </navigation>

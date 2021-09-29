@@ -5,12 +5,16 @@ public class ThanhVien {
     private String HoTen;
     private String NamSinh;
     private String SDT;
+    private String Avatar;
+    private String MatKhau;
 
-    public ThanhVien(int maTV, String hoTen, String namSinh, String SDT) {
+    public ThanhVien(int maTV, String hoTen, String namSinh, String SDT, String avatar, String matKhau) {
         MaTV = maTV;
         HoTen = hoTen;
         NamSinh = namSinh;
         this.SDT = SDT;
+        Avatar = avatar;
+        MatKhau = matKhau;
     }
 
     public int getMaTV() {
@@ -44,4 +48,21 @@ public class ThanhVien {
     public void setSDT(String SDT) {
         this.SDT = SDT;
     }
+
+    public String getAvatar() {
+        return Avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        Avatar = avatar;
+    }
+
+    public String getMatKhau() {
+        return MatKhau;
+    }
+
+    public void setMatKhau(String matKhau) {
+        MatKhau = matKhau;
+    }
 }
+
