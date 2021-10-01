@@ -16,13 +16,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_baseline_person_24" />
+        app:srcCompat="@drawable/img_add_avatar" />
 
     <EditText
         android:id="@+id/edt_dialogAddMaThanhVien"
+        android:paddingLeft="20dp"
+        android:background="@drawable/custom_edt"
         android:layout_width="match_parent"
         android:layout_marginHorizontal="30dp"
-        android:layout_height="wrap_content"
+        android:layout_height="45dp"
         android:layout_marginTop="60dp"
         android:ems="10"
         android:hint="Nhập mã thành viên"
@@ -33,9 +35,11 @@
 
     <EditText
         android:id="@+id/edt_dialogAddTenThanhVien"
+        android:paddingLeft="20dp"
+        android:background="@drawable/custom_edt"
         android:layout_width="match_parent"
         android:layout_marginHorizontal="30dp"
-        android:layout_height="wrap_content"
+        android:layout_height="45dp"
         android:layout_marginTop="15dp"
         android:ems="10"
         android:hint="Nhập họ tên"
@@ -45,9 +49,11 @@
 
     <EditText
         android:id="@+id/edt_dialogAddNamSinhThanhVien"
+        android:paddingLeft="20dp"
+        android:background="@drawable/custom_edt"
         android:layout_width="match_parent"
         android:layout_marginHorizontal="30dp"
-        android:layout_height="wrap_content"
+        android:layout_height="45dp"
         android:layout_marginTop="8dp"
         android:ems="10"
         android:inputType="textPersonName"
@@ -57,9 +63,11 @@
 
     <EditText
         android:id="@+id/edt_dialogAddSDTThanhVien"
+        android:paddingLeft="20dp"
+        android:background="@drawable/custom_edt"
         android:layout_width="match_parent"
         android:layout_marginHorizontal="30dp"
-        android:layout_height="wrap_content"
+        android:layout_height="45dp"
         android:layout_marginTop="11dp"
         android:ems="10"
         android:inputType="textPersonName"
@@ -69,11 +77,13 @@
 
     <Button
         android:id="@+id/btn_dialogAddThanhVien"
+        android:background="@drawable/custom_button"
         android:layout_width="match_parent"
         android:layout_marginHorizontal="30dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
-        android:text="Thêm"
+        android:text="Thêm thành viên"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.49"
         app:layout_constraintStart_toStartOf="parent"
@@ -83,7 +93,7 @@
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Click choose image"
+        android:text="Please click me!"
         app:layout_constraintEnd_toEndOf="@+id/imgBtn_dialogAddAvatarThanhVien"
         app:layout_constraintHorizontal_bias="0.487"
         app:layout_constraintStart_toStartOf="@+id/imgBtn_dialogAddAvatarThanhVien"

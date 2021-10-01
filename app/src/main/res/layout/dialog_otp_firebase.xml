@@ -7,8 +7,11 @@
 
     <EditText
         android:id="@+id/edt_DialogNhapOTP"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:background="@drawable/custom_edt"
+        android:layout_marginHorizontal="20dp"
+        android:paddingLeft="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
         android:layout_marginTop="22dp"
         android:ems="10"
         android:inputType="textPersonName"
@@ -19,7 +22,10 @@
 
     <Button
         android:id="@+id/btn_DialogGuiOTP"
-        android:layout_width="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:background="@drawable/custom_button"
+        android:textColor="@color/white"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="19dp"
         android:text="Xác thực"

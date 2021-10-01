@@ -1,4 +1,4 @@
-package com.example.duanmau.Activity;
+package com.example.duanmau.Fragment;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -9,14 +9,9 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
 
 import android.provider.MediaStore;
 import android.util.Log;
@@ -29,8 +24,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.example.duanmau.LoginActivity;
-import com.example.duanmau.MainActivity;
 import com.example.duanmau.Model.ThanhVien;
 import com.example.duanmau.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -46,7 +39,6 @@ import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -59,7 +51,6 @@ import com.google.firebase.storage.UploadTask;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -169,8 +160,8 @@ public class FragmentThemThanhVien extends Fragment {
                                     if(task.isSuccessful()){
                                         QuerySnapshot snapshot = task.getResult();
                                         for(QueryDocumentSnapshot doc: snapshot){
-                                            Log.d("=======> ", doc.get("MaTV").toString());
-                                            if(String.valueOf(thanhVien.getMaTV()).equals(doc.get("MaTV").toString())){
+                                            //Log.d("=======> ", doc.get("MaTV").toString());
+                                            if(String.valueOf(thanhVien.getMaTV()).equals(doc.get("MaTV").toString()) || thanhVien.getSDT().equals(doc.get("SDT").toString())){
                                                 check = 1;
                                                 break;
                                             }

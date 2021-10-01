@@ -85,7 +85,13 @@ public class LoginActivity extends AppCompatActivity {
                     QuerySnapshot snapshot = task.getResult();
                     for(QueryDocumentSnapshot doc: snapshot){
                         if(userName.equals(doc.get("SDT")) && pass.equals(doc.get("MatKhau"))){
-                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                            //
+                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            intent.putExtra("SDT", userName);
+                            intent.putExtra("HoTen", doc.get("HoTen").toString());
+                            intent.putExtra("Avatar", doc.get("Avatar").toString());
+
+                            startActivity(intent);
                             remeberUser(userName, pass, cb_luuTk.isChecked());
                             check = 1;
                             break;

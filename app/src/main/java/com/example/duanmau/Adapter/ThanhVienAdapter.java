@@ -17,7 +17,6 @@ import java.util.List;
 
 public class ThanhVienAdapter extends BaseAdapter {
     private Context context;
-//    private int layout;
     private List<ThanhVien> list;
 
     public ThanhVienAdapter(Context context, List<ThanhVien> list) {

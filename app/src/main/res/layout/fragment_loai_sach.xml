@@ -15,14 +15,14 @@
         android:layout_marginStart="30dp"
         android:layout_marginTop="30dp"
         android:fontFamily="@font/merriweather_bold"
-        android:text="Thành viên"
+        android:text="Loại sách"
         android:textColor="@color/black"
         android:textSize="25dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.baoyz.swipemenulistview.SwipeMenuListView
-        android:id="@+id/swlv_user"
+        android:id="@+id/swlv_loaisach"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="60dp"
@@ -35,7 +35,7 @@
     </com.baoyz.swipemenulistview.SwipeMenuListView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/flbtn_addThanhVien"
+        android:id="@+id/flbtn_addLoaiSach"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="30dp"
@@ -52,12 +52,12 @@
         android:layout_marginStart="23dp"
         android:layout_marginTop="20dp"
         android:fontFamily="@font/merriweather_bold"
-        android:text="Danh sách thành viên thư viện"
+        android:text="Danh sách loại sách thư viện"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
     <EditText
-        android:id="@+id/editTextTextPersonName2"
+        android:id="@+id/edt_searchLoaiSach"
         android:background="@null"
         android:fontFamily="@font/merriweather_bold"
         android:drawableEnd="@drawable/icon_search"

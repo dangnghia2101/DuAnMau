@@ -4,21 +4,27 @@
     tools:ignore="HardcodedText">
     <group >
         <item android:id="@+id/nav_PhieuMuon"
-            android:title="Quản lý phiếu mượn"/>
+            android:title="Quản lý phiếu mượn"
+            android:icon="@drawable/icon_home"/>
         <item android:id="@+id/nav_LoaiSach"
-            android:title="Quản lý loại sách"/>
+            android:title="Quản lý loại sách"
+            android:icon="@drawable/icon_loaisach"/>
         <item android:id="@+id/nav_Sach"
-            android:title="Quản lý sách"/>
+            android:title="Quản lý sách"
+            android:icon="@drawable/icon_sach"/>
         <item android:id="@+id/nav_ThanhVien"
-            android:title="Quản lý thành viên"/>
+            android:title="Quản lý thành viên"
+            android:icon="@drawable/ic_baseline_person_24"/>
     </group>
 
     <item android:title="Thống kê">
         <menu>
             <item android:id="@+id/nav_Top10"
-                android:title="Top 10 sách mượn nhiều nhất"/>
+                android:title="Top 10 sách mượn nhiều nhất"
+                android:icon="@drawable/icon_top10"/>
             <item android:id="@+id/nav_DoanhThu"
-                android:title="Doanh thu"/>
+                android:title="Doanh thu"
+                android:icon="@drawable/icon_money"/>
         </menu>
     </item>
 
@@ -26,9 +32,11 @@
     <item android:title="Người dùng">
         <menu>
             <item android:id="@+id/nav_DoiMatKhau"
-                android:title="Top 10 sách mượn nhiều nhất"/>
+                android:title="Đổi mật khẩu"
+                android:icon="@drawable/icon_key"/>
             <item android:id="@+id/nav_DangXuat"
-                android:title="Doanh thu"/>
+                android:title="Đăng xuất"
+                android:icon="@drawable/icon_logout"/>
         </menu>
     </item>
 

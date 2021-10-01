@@ -7,12 +7,12 @@
 
     <fragment
         android:id="@+id/fragmentThanhVien"
-        android:name="com.example.duanmau.Activity.FragmentThanhVien"
+        android:name="com.example.duanmau.Fragment.FragmentThanhVien"
         android:label="fragment_thanh_vien"
         tools:layout="@layout/fragment_thanh_vien" />
     <fragment
         android:id="@+id/fragmentTrangChinh"
-        android:name="com.example.duanmau.Activity.FragmentTrangChinh"
+        android:name="com.example.duanmau.Fragment.FragmentTrangChinh"
         android:label="fragment_trang_chinh"
         tools:layout="@layout/fragment_trang_chinh" >
         <action

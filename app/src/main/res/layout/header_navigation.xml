@@ -10,7 +10,7 @@
         android:id="@+id/view"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:background="#2898CA"
+        android:background="@drawable/background_login"
         tools:ignore="MissingConstraints">
 
 
@@ -18,24 +18,43 @@
 
     <TextView
         android:id="@+id/textView"
+        android:fontFamily="@font/merriweather_bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:text="Hello"
-        android:textSize="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/textView2"
+        android:textSize="14dp"
+        app:layout_constraintBottom_toTopOf="@+id/tv_nameNavigation"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/tv_nameNavigation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="15dp"
+        android:fontFamily="@font/merriweather_bold"
         android:text="Dang Tuan Nghia"
         android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        app:cardCornerRadius="150dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginBottom="-15dp"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintStart_toStartOf="@+id/view"
+        app:srcCompat="@drawable/ic_baseline_person_24">
+    <ImageView
+        android:id="@+id/imv_avaterNagigation"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:scaleType="centerCrop"
+ />
+    </androidx.cardview.widget.CardView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

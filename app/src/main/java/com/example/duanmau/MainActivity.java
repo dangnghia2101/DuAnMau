@@ -8,19 +8,27 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
-import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.MenuItem;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-import com.example.duanmau.Activity.FragmentThanhVien;
-import com.example.duanmau.Activity.FragmentTrangChinh;
+import com.example.duanmau.Fragment.FragmentLoaiSach;
+import com.example.duanmau.Fragment.FragmentThanhVien;
+import com.example.duanmau.Fragment.FragmentTrangChinh;
 import com.google.android.material.navigation.NavigationView;
+import com.squareup.picasso.Picasso;
 
 public class MainActivity extends AppCompatActivity {
     public DrawerLayout drawerLayout;
     public ActionBarDrawerToggle actionBarDrawerToggle;
     public NavigationView navigationView;
+
+    TextView tvNameNavigation;
+    ImageView imgAvatarNavigation;
 
 
     @Override
@@ -47,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openNavigation(){
+
         //Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -67,6 +76,16 @@ public class MainActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction().replace(R.id.nav_TrangChinh_fragment, new FragmentTrangChinh()).commit();
         navigationView.setCheckedItem(R.id.nav_PhieuMuon);
 
+        //Ánh xạ đến textView header,
+        View headerView = navigationView.getHeaderView(0);
+        tvNameNavigation = headerView.findViewById(R.id.tv_nameNavigation);
+        imgAvatarNavigation = headerView.findViewById(R.id.imv_avaterNagigation);
+
+        //lấy intent để đưa tên lên
+        Intent intent = getIntent();
+        tvNameNavigation.setText(intent.getStringExtra("HoTen"));
+        Picasso.get().load(intent.getStringExtra("Avatar")).into(imgAvatarNavigation);
+
         // Event CLick navigation
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             Fragment temp;
@@ -81,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
                         temp = new FragmentTrangChinh();
                         break;
                     case R.id.nav_LoaiSach:
+                        temp =  new FragmentLoaiSach();
                         break;
                     case R.id.nav_Sach:
                         break;
@@ -91,6 +111,11 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.nav_DoiMatKhau:
                         break;
                     case R.id.nav_DangXuat:
+                        startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                        SharedPreferences pref =getSharedPreferences("USER_FILE", MODE_PRIVATE);
+                        SharedPreferences.Editor edit = pref.edit();
+                        edit.clear();
+                        edit.commit();
                         break;
 
                 }
