@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_login"
+    tools:context=".LoginActivity">
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tip_Pass2ChangePass"
+        android:layout_width="0dp"
+        app:passwordToggleEnabled="true"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tip_Pass1ChangePass"
+        app:passwordToggleTint="#2196F3">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:background="@drawable/custom_edt"
+            android:paddingLeft="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Xác nhận mật khẩu" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tip_Pass1ChangePass"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="140dp"
+        app:counterMaxLength="10"
+        app:passwordToggleEnabled="true"
+        app:passwordToggleTint="#2196F3"
+        app:counterEnabled="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:background="@drawable/custom_edt"
+            android:paddingLeft="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:hint="Nhập mật khẩu mới" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/btn_FragSubmitChangePass"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginBottom="48dp"
+        android:background="@drawable/custom_logindangnhap_new"
+        android:text="Thay đổi mật khẩu"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.977"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <CheckBox
+        android:id="@+id/cb_NhoTkChangePass"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="15dp"
+        android:text="Nhớ mật khẩu?"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tip_Pass2ChangePass" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:textColor="#2F80ED"
+        android:fontFamily="@font/merriweather_bold"
+        android:textSize="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="339dp"
+        android:text="Change password"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

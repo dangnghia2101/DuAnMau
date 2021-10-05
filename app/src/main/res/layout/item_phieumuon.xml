@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="160dp">
+
+
+    <TextView
+        android:id="@+id/tv_MaPMItemPhieuMuon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="15dp"
+        android:fontFamily="@font/merriweather_bold"
+        android:text="PM1"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_MaTTItemPhieuMuon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="192dp"
+        android:fontFamily="@font/merriweather_bold"
+        android:text="TT01"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_TienThueItemPhieuMuon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="166dp"
+        android:fontFamily="@font/merriweather_bold"
+        android:text="Tokuda"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_MaTTItemPhieuMuon" />
+
+    <TextView
+        android:id="@+id/tv_TraSachItemPhieuMuon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="234dp"
+        android:fontFamily="@font/merriweather_bold"
+        android:text="1"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_TienThueItemPhieuMuon" />
+
+    <TextView
+        android:id="@+id/tv_MaSachItemPhieuMuon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="5dp"
+        android:fontFamily="@font/merriweather_bold"
+        android:text="13"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_MaPMItemPhieuMuon" />
+
+    <TextView
+        android:id="@+id/tv_MaTVItemPhieuMuon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="5dp"
+        android:fontFamily="@font/merriweather_bold"
+        android:text="11"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_MaSachItemPhieuMuon" />
+
+    <TextView
+        android:id="@+id/tv_NgayItemPhieuMuon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="5dp"
+        android:fontFamily="@font/merriweather_bold"
+        android:text="10/2021"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_MaTVItemPhieuMuon" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -16,7 +16,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.duanmau.Fragment.FragPhieuMuon;
+import com.example.duanmau.Fragment.FragmentDoiMatKhau;
 import com.example.duanmau.Fragment.FragmentLoaiSach;
+import com.example.duanmau.Fragment.FragmentSach;
 import com.example.duanmau.Fragment.FragmentThanhVien;
 import com.example.duanmau.Fragment.FragmentTrangChinh;
 import com.google.android.material.navigation.NavigationView;
@@ -73,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.nav_TrangChinh_fragment, new FragmentTrangChinh()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.nav_TrangChinh_fragment, new FragPhieuMuon()).commit();
         navigationView.setCheckedItem(R.id.nav_PhieuMuon);
 
         //Ánh xạ đến textView header,
@@ -81,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
         tvNameNavigation = headerView.findViewById(R.id.tv_nameNavigation);
         imgAvatarNavigation = headerView.findViewById(R.id.imv_avaterNagigation);
 
-        //lấy intent để đưa tên lên
+        //lấy intent để đưa tên lên Header
         Intent intent = getIntent();
         tvNameNavigation.setText(intent.getStringExtra("HoTen"));
         Picasso.get().load(intent.getStringExtra("Avatar")).into(imgAvatarNavigation);
@@ -97,18 +100,20 @@ public class MainActivity extends AppCompatActivity {
                         temp = new FragmentThanhVien();
                         break;
                     case R.id.nav_PhieuMuon:
-                        temp = new FragmentTrangChinh();
+                        temp = new FragPhieuMuon();
                         break;
                     case R.id.nav_LoaiSach:
                         temp =  new FragmentLoaiSach();
                         break;
                     case R.id.nav_Sach:
+                        temp = new FragmentSach();
                         break;
                     case R.id.nav_Top10:
                         break;
                     case R.id.nav_DoanhThu:
                         break;
                     case R.id.nav_DoiMatKhau:
+                        temp = new FragmentDoiMatKhau();
                         break;
                     case R.id.nav_DangXuat:
                         startActivity(new Intent(MainActivity.this, LoginActivity.class));

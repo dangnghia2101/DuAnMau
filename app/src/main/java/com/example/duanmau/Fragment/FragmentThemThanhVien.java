@@ -235,25 +235,30 @@ public class FragmentThemThanhVien extends Fragment {
 
     private void uploadImageToFirebase(String name, Uri contentUri){
         StorageReference image = storageReference.child("IMAGE_THANHVIEN/"+name);
-        image.putFile(contentUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                image.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        //Log.d("==> Done", " Load hình ảnh lên Firebase thành công "+ uri.toString());
-                        // Thêm thành viên lên firebase
-                        thanhVien.setAvatar(uri.toString());
-                        addThanhVienToFireStore(thanhVien);
-                    }
-                });
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d("==> Exception", e.getMessage());
-            }
-        });
+        try {
+            image.putFile(contentUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    image.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            //Log.d("==> Done", " Load hình ảnh lên Firebase thành công "+ uri.toString());
+                            // Thêm thành viên lên firebase
+                            thanhVien.setAvatar(uri.toString());
+                            addThanhVienToFireStore(thanhVien);
+                        }
+                    });
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.d("==> Exception", e.getMessage());
+                }
+            });
+        }catch (Exception e){
+            thanhVien.setAvatar("");
+            addThanhVienToFireStore(thanhVien);
+        }
     }
 
     private void Dialog_OpenOTP(){
@@ -263,7 +268,7 @@ public class FragmentThemThanhVien extends Fragment {
         dialogOTP = new Dialog(getContext());
         dialogOTP.setContentView(R.layout.dialog_otp_firebase);
 
-        dialogOTP.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+        dialogOTP.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         int width = (int)(getResources().getDisplayMetrics().widthPixels*0.6);
         int height = (int)(getResources().getDisplayMetrics().heightPixels*0.2);
         dialogOTP.getWindow().setLayout(width,height);

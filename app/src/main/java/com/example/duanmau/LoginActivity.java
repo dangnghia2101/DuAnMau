@@ -90,6 +90,7 @@ public class LoginActivity extends AppCompatActivity {
                             intent.putExtra("SDT", userName);
                             intent.putExtra("HoTen", doc.get("HoTen").toString());
                             intent.putExtra("Avatar", doc.get("Avatar").toString());
+                            intent.putExtra("MaTV", doc.get("MaTV").toString());
 
                             startActivity(intent);
                             remeberUser(userName, pass, cb_luuTk.isChecked());
@@ -115,6 +116,8 @@ public class LoginActivity extends AppCompatActivity {
             edit.putString("USERNAME", u);
             edit.putString("PASSWORD", p);
             edit.putBoolean("STATUS", status);
+
+
         }
 
         //luu lai toan bo

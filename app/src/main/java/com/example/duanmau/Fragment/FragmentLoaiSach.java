@@ -70,13 +70,6 @@ public class FragmentLoaiSach extends Fragment {
 
     Dialog dialog_suaLoaiSach, dialog_ThemLoaiSach;
 
-    //Load image
-    int GALEERY_REQUEST_CODE = 105;
-    Uri contenUri;
-    String imageFileName ="";
-
-    //Image firebase
-    StorageReference storageReference;
 
 
     public FragmentLoaiSach() {

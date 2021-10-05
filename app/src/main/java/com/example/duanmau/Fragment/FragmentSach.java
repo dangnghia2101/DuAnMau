@@ -31,7 +31,9 @@ import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
+import com.example.duanmau.Adapter.SachAdapter;
 import com.example.duanmau.Adapter.ThanhVienAdapter;
+import com.example.duanmau.Model.Sach;
 import com.example.duanmau.Model.ThanhVien;
 import com.example.duanmau.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -55,29 +57,26 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link FragmentThanhVien#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class FragmentThanhVien extends Fragment {
+public class FragmentSach extends Fragment {
+
     private SwipeMenuListView swipeMenuListView;
-    public List<ThanhVien> list;
+    public List<Sach> list;
     FloatingActionButton floatingActionButton;
 
-    EditText edt_dialogTenTV, edt_dialogNamSinhTV, edt_dialogMKTV;
-    ImageButton imgBtn_dialogAvatarSuaTV;
-    Button btn_dialogSendSuaTV;
+    EditText edt_dialogTenSach, edt_dialogSLSach, edt_dialogGiaThueSach;
+    ImageButton imgBtn_dialogAvatarSuaSach;
+    Button btn_dialogGuiSuaSach;
+
 
     //Firestore
     FirebaseFirestore db;
-    final CollectionReference reference = FirebaseFirestore.getInstance().collection("ThanhVien");
+    final CollectionReference reference = FirebaseFirestore.getInstance().collection("Sach");
 
 
-    ThanhVien thanhVien;
+    Sach sach;
     View view;
 
-    Dialog dialog_suaThanhVien;
+    Dialog dialog_suaSach;
 
     //Load image
     int GALEERY_REQUEST_CODE = 105;
@@ -87,16 +86,13 @@ public class FragmentThanhVien extends Fragment {
     //Image firebase
     StorageReference storageReference;
 
-    //public FirebaseFirestore firestore;
 
-    public FragmentThanhVien() {
+    public FragmentSach() {
         // Required empty public constructor
     }
 
-
-    // TODO: Rename and change types and number of parameters
-    public static FragmentThanhVien newInstance(String param1, String param2) {
-        FragmentThanhVien fragment = new FragmentThanhVien();
+    public static FragmentSach newInstance(String param1, String param2) {
+        FragmentSach fragment = new FragmentSach();
         Bundle args = new Bundle();
 
         fragment.setArguments(args);
@@ -107,62 +103,60 @@ public class FragmentThanhVien extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        db = FirebaseFirestore.getInstance();
+        list = new ArrayList<>();
         storageReference = FirebaseStorage.getInstance().getReference();
+        db = FirebaseFirestore.getInstance();
+        getAllSach(getContext());
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        view = inflater.inflate(R.layout.fragment_thanh_vien, container, false);
-
         // Inflate the layout for this fragment
-        return view;
+        return inflater.inflate(R.layout.fragment_sach, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        floatingActionButton = view.findViewById(R.id.flbtn_addThanhVien);
+        floatingActionButton = view.findViewById(R.id.flbtn_addSach);
+        swipeMenuListView = view.findViewById(R.id.swlv_sach);
 
-        swipeMenuListView = view.findViewById(R.id.swlv_user);
+        list = new ArrayList<>();
 
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                //Cách 2
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_TrangChinh_fragment, new FragmentThemThanhVien()).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_TrangChinh_fragment, new FragmentThemSach()).commit();
 
             }
         });
 
-        list = new ArrayList<>();
-        //Lấy danh sách từ Firebase xuống Swipeview
-        getAllThanhVien(getContext());
+        //Lấy danh sách sách từ firebase xuống
+        //getAllSach(getContext());
+
         createSwipeMenu();
 
-        //Event click swipemenu
+        //Event clock swipemenu
         swipeMenuListView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
                 switch (index){
                     case 0:
-                        dialog_suaThanhVien(position);
+                        dialog_suaSach(position);
                         break;
                     case 1:
-
-                        deleteThanhVienFireBase(position);
+                        deleteSachFireBase(position);
                         break;
                 }
-
                 return false;
             }
         });
-
     }
+
+
 
     public void createSwipeMenu(){
         // Kéo ngang Swipemenu
@@ -209,10 +203,10 @@ public class FragmentThanhVien extends Fragment {
         swipeMenuListView.setMenuCreator(creator);
     }
 
-    public void getAllThanhVien(Context context){
+    public void getAllSach(Context context){
         list = new ArrayList<>();
 
-        final CollectionReference reference = db.collection("ThanhVien");
+        final CollectionReference reference = db.collection("Sach");
 
         reference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -221,19 +215,18 @@ public class FragmentThanhVien extends Fragment {
                     if(task.isSuccessful()){
                         QuerySnapshot snapshot = task.getResult();
                         for(QueryDocumentSnapshot doc: snapshot){
-                            int MaTV = Integer.parseInt(doc.get("MaTV").toString());
-                            String HoTen = doc.get("HoTen").toString();
-                            String MatKhau = doc.get("MatKhau").toString();
-                            String NamSinh = doc.get("NamSinh").toString();
-                            String SDT = doc.get("SDT").toString();
+                            int MaSach = Integer.parseInt(doc.get("MaSach").toString());
+                            String MaLoai = doc.get("MaLoai").toString();
+                            String TenSach = doc.get("TenSach").toString();
+                            int GiaThue = Integer.parseInt(doc.get("GiaThue").toString());
+                            int SoLuong = Integer.parseInt(doc.get("SoLuong").toString());
                             String Avatar = doc.get("Avatar").toString();
 
-                            thanhVien = new ThanhVien(MaTV, HoTen, NamSinh, SDT, Avatar, MatKhau);
-                            list.add(thanhVien);
+                            sach = new Sach(MaSach, MaLoai, TenSach, SoLuong, GiaThue, Avatar);
+                            list.add(sach);
 
-                            //Log.d("====>", doc.get("MaTV").toString() + doc.get("HoTen").toString());
                         }
-                        ThanhVienAdapter adapter =new ThanhVienAdapter(context, list);
+                        SachAdapter adapter =new SachAdapter(context, list);
                         swipeMenuListView.setAdapter(adapter);
                     }else{
                         Toast.makeText(getContext(), "Kiểm tra kết nối mạng của bạn. Lỗi "+ task.getException(), Toast.LENGTH_SHORT).show();
@@ -245,19 +238,19 @@ public class FragmentThanhVien extends Fragment {
         });
     }
 
-    private void deleteThanhVienFireBase(int positon){
+    private void deleteSachFireBase(int positon){
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Thông báo")
-                .setMessage("Bạn chắn chắn muốn xóa thành viên không?")
+                .setMessage("Bạn chắn chắn muốn xóa sách không?")
                 .setPositiveButton("Có", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-                        db.collection("ThanhVien").document(list.get(positon).getMaTV()+"")
+                        db.collection("Sach").document(list.get(positon).getMaSach()+"")
                                 .delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
-                                getAllThanhVien(getContext());
+                                getAllSach(getContext());
                             }
                         });
 
@@ -273,25 +266,24 @@ public class FragmentThanhVien extends Fragment {
         builder.show();
     }
 
-    private void updateFirebase(ThanhVien thanhVien){
+    private void updateFirebase(Sach sach){
         try {
             Map map = new HashMap<String, Object>();
-            map.put("MaTV", thanhVien.getMaTV());
-            map.put("HoTen", thanhVien.getHoTen());
-            map.put("MatKhau", thanhVien.getMatKhau());
-            map.put("NamSinh", thanhVien.getNamSinh());
-            map.put("SDT", thanhVien.getSDT());
-            map.put("Avatar", thanhVien.getAvatar());
-            reference.document(thanhVien.getMaTV() + "").set(map, SetOptions.merge());
+            map.put("MaSach", sach.getMaSach());
+            map.put("MaLoai", sach.getMaLoai());
+            map.put("TenSach", sach.getTenSach());
+            map.put("SoLuong", sach.getSoLuong());
+            map.put("GiaThue", sach.getGiaThue());
+            map.put("Avatar", sach.getAvatar());
+            reference.document(sach.getMaSach() + "").set(map, SetOptions.merge());
 
-            dialog_suaThanhVien.dismiss();
+            dialog_suaSach.dismiss();
             //Cập nhật lại listView
-            getAllThanhVien(getContext());
+            getAllSach(getContext());
         }catch (Exception e){
             Toast.makeText(getContext(), "Error: "+ e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
-
 
     // Load hình ảnh lên ImageButton
     @Override
@@ -303,7 +295,7 @@ public class FragmentThanhVien extends Fragment {
                 contenUri = data.getData();
                 String timSamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
                 imageFileName = "JPEG_" + timSamp +"."+ getFileExt(contenUri);
-                imgBtn_dialogAvatarSuaTV.setImageURI(contenUri);
+                imgBtn_dialogAvatarSuaSach.setImageURI(contenUri);
             }
         }
     }
@@ -316,7 +308,7 @@ public class FragmentThanhVien extends Fragment {
     }
 
     private void uploadImageToFirebase(String name, Uri contentUri){
-        StorageReference image = storageReference.child("IMAGE_THANHVIEN/"+name);
+        StorageReference image = storageReference.child("IMAGE_SACH/"+name);
         try {
             image.putFile(contentUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
@@ -324,12 +316,10 @@ public class FragmentThanhVien extends Fragment {
                     image.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
-                            //Log.d("==> Done", " Load hình ảnh lên Firebase thành công "+ uri.toString());
-                            // Thêm thành viên lên firebase
-                            thanhVien.setAvatar(uri.toString());
+                            // Thêm sách lên firebase
+                            sach.setAvatar(uri.toString());
 
-                            //addThanhVienToFireStore(thanhVien);
-                            updateFirebase(thanhVien);
+                            updateFirebase(sach);
                         }
                     });
                 }
@@ -340,47 +330,48 @@ public class FragmentThanhVien extends Fragment {
                 }
             });
         }catch (Exception e){
-            thanhVien.setAvatar("");
-            //addThanhVienToFireStore(thanhVien);
-            updateFirebase(thanhVien);
+            sach.setAvatar("");
+            updateFirebase(sach);
+            Toast.makeText(getContext(), "Chưa có hình, lỗi "+e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
-    private void dialog_suaThanhVien(int positon){
-        dialog_suaThanhVien =  new Dialog(getContext());
-        dialog_suaThanhVien.setContentView(R.layout.dialog_suathanhvien);
+    private void dialog_suaSach(int positon){
+        dialog_suaSach =  new Dialog(getContext());
+        dialog_suaSach.setContentView(R.layout.dialog_suasach);
 
-        dialog_suaThanhVien.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog_suaSach.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         int width = (int)(getResources().getDisplayMetrics().widthPixels*0.8);
         int height = (int)(getResources().getDisplayMetrics().heightPixels*0.7);
-        dialog_suaThanhVien.getWindow().setLayout(width,height);
+        dialog_suaSach.getWindow().setLayout(width,height);
 
-        edt_dialogTenTV = dialog_suaThanhVien.findViewById(R.id.edt_dialogTenSuaTV);
-        edt_dialogNamSinhTV = dialog_suaThanhVien.findViewById(R.id.edt_dialogNamSinhSuaTV);
-        edt_dialogMKTV= dialog_suaThanhVien.findViewById(R.id.edt_dialogMKSuaTV);
-        btn_dialogSendSuaTV = dialog_suaThanhVien.findViewById(R.id.btn_dialogGuiSuaTV);
-        imgBtn_dialogAvatarSuaTV = dialog_suaThanhVien.findViewById(R.id.imgBtn_dialogAvatarSuaTV);
+
+        edt_dialogTenSach = dialog_suaSach.findViewById(R.id.edt_dialogTenSuaSach);
+        edt_dialogGiaThueSach= dialog_suaSach.findViewById(R.id.edt_dialogGiaThueSuaSach);
+        edt_dialogSLSach= dialog_suaSach.findViewById(R.id.edt_dialogSoLuongSuaSach);
+        btn_dialogGuiSuaSach = dialog_suaSach.findViewById(R.id.btn_dialogGuiSuaSach);
+        imgBtn_dialogAvatarSuaSach = dialog_suaSach.findViewById(R.id.imgBtn_dialogAvatarSuaSach);
 
         // Thêm dữ liệu vào dialog sửa
-        edt_dialogTenTV.setText(list.get(positon).getHoTen());
-        edt_dialogNamSinhTV.setText(list.get(positon).getNamSinh());
-        edt_dialogMKTV.setText(list.get(positon).getMatKhau());
+        edt_dialogTenSach.setText(list.get(positon).getTenSach());
+        edt_dialogSLSach.setText(list.get(positon).getSoLuong()+"");
+        edt_dialogGiaThueSach.setText(list.get(positon).getGiaThue()+"");
 
-        thanhVien = list.get(positon);
+        sach = list.get(positon);
 
-        btn_dialogSendSuaTV.setOnClickListener(new View.OnClickListener() {
+        btn_dialogGuiSuaSach.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String tenTV = edt_dialogTenTV.getText().toString();
-                String namSinhTV = edt_dialogTenTV.getText().toString();
-                String matKhauTV = edt_dialogMKTV.getText().toString();
+                String tenSach = edt_dialogTenSach.getText().toString();
+                String soluongSach = edt_dialogSLSach.getText().toString();
+                String giaSach = edt_dialogGiaThueSach.getText().toString();
 
-                if(tenTV.isEmpty() || namSinhTV.isEmpty() || matKhauTV.isEmpty()){
+                if(tenSach.isEmpty() || soluongSach.isEmpty() ||  giaSach.isEmpty()){
                     Toast.makeText(getContext(), "Không được để trống", Toast.LENGTH_SHORT).show();
                 }else{
-                    list.get(positon).setHoTen(tenTV);
-                    list.get(positon).setNamSinh(namSinhTV);
-                    list.get(positon).setMatKhau(matKhauTV);
+                    list.get(positon).setTenSach(tenSach);
+                    list.get(positon).setSoLuong(Integer.parseInt(soluongSach));
+                    list.get(positon).setGiaThue(Integer.parseInt(giaSach));
 
                     uploadImageToFirebase(imageFileName, contenUri);
                 }
@@ -390,7 +381,7 @@ public class FragmentThanhVien extends Fragment {
         });
 
         // Chọn hình ảnh
-        imgBtn_dialogAvatarSuaTV.setOnClickListener(new View.OnClickListener() {
+        imgBtn_dialogAvatarSuaSach.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -398,6 +389,7 @@ public class FragmentThanhVien extends Fragment {
             }
         });
 
-        dialog_suaThanhVien.show();
+        dialog_suaSach.show();
     }
+
 }
