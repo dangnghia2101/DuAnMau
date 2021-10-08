@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.os.Bundle;
 import android.view.View;
@@ -17,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.duanmau.Fragment.FragPhieuMuon;
+import com.example.duanmau.Fragment.FragmentDoanhThu;
 import com.example.duanmau.Fragment.FragmentDoiMatKhau;
 import com.example.duanmau.Fragment.FragmentLoaiSach;
 import com.example.duanmau.Fragment.FragmentSach;
@@ -40,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         openNavigation();
+
+        hideNavigation();
 
     }
 
@@ -111,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.nav_Top10:
                         break;
                     case R.id.nav_DoanhThu:
+                        temp = new FragmentDoanhThu();
                         break;
                     case R.id.nav_DoiMatKhau:
                         temp = new FragmentDoiMatKhau();
@@ -132,5 +137,16 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    // Ẩn các tác vụ thành viên và thủ thư không có quyền
+    private void hideNavigation(){
+        Intent intent = getIntent();
+        int quyen = intent.getIntExtra("Quyen", 3);
+
+        if(quyen==3) {
+            Menu menu = navigationView.getMenu();
+            menu.findItem(R.id.nav_DoanhThu).setVisible(false);
+            menu.findItem(R.id.nav_ThanhVien).setVisible(false);
+        }
+    }
 
 }

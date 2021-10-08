@@ -64,6 +64,7 @@ public class FragmentLoaiSach extends Fragment {
     FirebaseFirestore db;
     final CollectionReference reference = FirebaseFirestore.getInstance().collection("LoaiSach");
 
+    private int Quyen = 3;
 
     LoaiSach loaiSach;
     View view;
@@ -127,6 +128,12 @@ public class FragmentLoaiSach extends Fragment {
                 dialog_themLoaiSach();
             }
         });
+
+        //Lấy quyền tài khoản
+        Intent intent = getActivity().getIntent();
+        Quyen = intent.getIntExtra("Quyen", 3);
+
+        hide_quyen();
 
     }
 
@@ -366,6 +373,13 @@ public class FragmentLoaiSach extends Fragment {
     }
 
 
+
+    //Ẩn tác vụ cho từng người dùng
+    private void hide_quyen(){
+        if(Quyen == 3) {
+            floatingActionButton.setVisibility(View.GONE);
+        }
+    }
 
 
 }

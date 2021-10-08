@@ -20,8 +20,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.example.duanmau.Model.ThanhVien;
@@ -56,6 +59,10 @@ import java.util.concurrent.TimeUnit;
 
 
 public class FragmentThemThanhVien extends Fragment {
+
+    private RadioGroup radioGroup;
+    private RadioButton rbt_thuThu, rbt_thanhVien;
+    private int Quyen=3;
 
     EditText edt_maTV, edtTenTV, edtNamSinh, edtSDT, edtMaOTP;
     ImageButton imgBtnAvatar, imgBtnExit;
@@ -102,14 +109,7 @@ public class FragmentThemThanhVien extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_them_thanh_vien, container, false);
 
-        // Ánh xạ
-        edt_maTV = (EditText) view.findViewById(R.id.edt_dialogAddMaThanhVien);
-        edtTenTV = (EditText) view.findViewById(R.id.edt_dialogAddTenThanhVien);
-        edtSDT = (EditText) view.findViewById(R.id.edt_dialogAddSDTThanhVien);
-        edtNamSinh = (EditText) view.findViewById(R.id.edt_dialogAddNamSinhThanhVien);
-        imgBtnAvatar = (ImageButton) view.findViewById(R.id.imgBtn_dialogAddAvatarThanhVien);
-        imgBtnExit = (ImageButton) view.findViewById(R.id.imgBtn_fragExitThemThanhVien);
-        btnAddThanhVien = (Button) view.findViewById(R.id.btn_dialogAddThanhVien);
+        anhxa();
 
 
         // Thoát màn hình thêm thành viên
@@ -183,9 +183,42 @@ public class FragmentThemThanhVien extends Fragment {
             }
         });
 
+        //Checked radio button
+        checked_radioBtn();
+
         return view;
     }
 
+    private void anhxa(){
+        // Ánh xạ
+        edt_maTV = (EditText) view.findViewById(R.id.edt_dialogAddMaThanhVien);
+        edtTenTV = (EditText) view.findViewById(R.id.edt_dialogAddTenThanhVien);
+        edtSDT = (EditText) view.findViewById(R.id.edt_dialogAddSDTThanhVien);
+        edtNamSinh = (EditText) view.findViewById(R.id.edt_dialogAddNamSinhThanhVien);
+        imgBtnAvatar = (ImageButton) view.findViewById(R.id.imgBtn_dialogAddAvatarThanhVien);
+        imgBtnExit = (ImageButton) view.findViewById(R.id.imgBtn_fragExitThemThanhVien);
+        btnAddThanhVien = (Button) view.findViewById(R.id.btn_dialogAddThanhVien);
+        radioGroup = (RadioGroup) view.findViewById(R.id.radioGroupThemTV);
+        rbt_thuThu = (RadioButton) view.findViewById(R.id.rbt_thuThu);
+        rbt_thanhVien = (RadioButton) view.findViewById(R.id.rbt_thanhVien);
+        rbt_thanhVien.setChecked(true);
+    }
+
+    private void checked_radioBtn(){
+        rbt_thanhVien.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                Quyen = 3;
+            }
+        });
+
+        rbt_thuThu.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                Quyen = 2;
+            }
+        });
+    }
 
 
     private void addThanhVienToFireStore(ThanhVien thanhVien){
@@ -201,11 +234,11 @@ public class FragmentThemThanhVien extends Fragment {
         data.put("MatKhau", thanhVien.getMatKhau());
         data.put("NamSinh", thanhVien.getNamSinh());
         data.put("SDT", thanhVien.getSDT());
+        data.put("Quyen", Quyen);
 
 
         try {
             collectionReference.document(thanhVien.getMaTV() + "").set(data);
-
         }catch (Exception e){
             Log.d("Error_addTVFirebase", e.getMessage());
         }

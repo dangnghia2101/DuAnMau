@@ -91,6 +91,7 @@ public class LoginActivity extends AppCompatActivity {
                             intent.putExtra("HoTen", doc.get("HoTen").toString());
                             intent.putExtra("Avatar", doc.get("Avatar").toString());
                             intent.putExtra("MaTV", doc.get("MaTV").toString());
+                            intent.putExtra("Quyen", Integer.parseInt(doc.get("Quyen").toString()));
 
                             startActivity(intent);
                             remeberUser(userName, pass, cb_luuTk.isChecked());

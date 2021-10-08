@@ -74,7 +74,11 @@ public class PhieuMuonAdapter extends BaseAdapter {
         holder.tvMaTV.setText(pm.getMaTV()+"");
         holder.tvNgay.setText(pm.getNgay());
         holder.tvTienThue.setText(pm.getTienThue()+"");
-        holder.tvTraSach.setText(pm.getTraSach()+"");
+
+        if(pm.getTraSach()==1){
+            holder.tvTraSach.setText("Đã trả");
+        }else holder.tvTraSach.setText("Chưa trả");
+
 
         return view;
     }

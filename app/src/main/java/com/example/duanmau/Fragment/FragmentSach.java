@@ -74,7 +74,9 @@ public class FragmentSach extends Fragment {
 
 
     Sach sach;
-    View view;
+
+    private int Quyen = 3;
+
 
     Dialog dialog_suaSach;
 
@@ -154,6 +156,12 @@ public class FragmentSach extends Fragment {
                 return false;
             }
         });
+
+        //Lấy quyền tài khoản
+        Intent intent = getActivity().getIntent();
+        Quyen = intent.getIntExtra("Quyen", 3);
+
+        hide_quyen();
     }
 
 
@@ -390,6 +398,13 @@ public class FragmentSach extends Fragment {
         });
 
         dialog_suaSach.show();
+    }
+
+    //Ẩn tác vụ cho từng người dùng
+    private void hide_quyen(){
+        if(Quyen == 3) {
+            floatingActionButton.setVisibility(View.GONE);
+        }
     }
 
 }

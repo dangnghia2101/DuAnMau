@@ -12,6 +12,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 
 import android.provider.MediaStore;
@@ -25,6 +26,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.baoyz.swipemenulistview.SwipeMenu;
@@ -44,6 +46,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -57,6 +62,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 public class FragPhieuMuon extends Fragment {
 
@@ -66,13 +72,16 @@ public class FragPhieuMuon extends Fragment {
 
     private Dialog dialog_themPhieuMuon;
     private Spinner sp_maSach, sp_maTT, spmaTV;
-    private EditText edt_maPhieuMuon, edt_thue;
     private Button btn_dialogSubmit;
+    private TextView edt_thue;
 
     //List load to spinner
-    private List<String> listMaSach;
+    private List<Integer> listMaSach;
     private List<String> listMaTT;
-    private List<String> listMaTV;
+    private List<Integer> listMaTV;
+
+    // Quyền của người đăng nhập được sử dụng chức năng gì
+    private int Quyen = 3;
 
     //Firestore
     FirebaseFirestore db;
@@ -143,6 +152,10 @@ public class FragPhieuMuon extends Fragment {
         setMaTTToSpiner();
         setMaTVToSpiner();
 
+        Intent intent = getActivity().getIntent();
+        Quyen = intent.getIntExtra("Quyen", 3);
+        //ẨN tác vụ
+        hide_quyen();
 
         //Tạo kéo trượt listview
         createSwipeMenu();
@@ -189,6 +202,7 @@ public class FragPhieuMuon extends Fragment {
                         0xCE)));
                 // set item width
                 openItem.setWidth(250);
+
                 // set item title
                 //openItem.setTitle("Open");
                 // set item title fontsize
@@ -287,40 +301,17 @@ public class FragPhieuMuon extends Fragment {
         builder.show();
     }
 
-    private void updateFirebase(PhieuMuon pm){
-        try {
-            Map map = new HashMap<String, Object>();
-            map.put("MaSach", pm.getMaSach());
-            map.put("MaPM", pm.getMaPM());
-            map.put("MaTT", pm.getMaTT());
-            map.put("MaTV", pm.getMaTV());
-            map.put("Ngay", pm.getNgay());
-            map.put("TienThue", pm.getTienThue());
-            map.put("TraSach", pm.getTraSach());
-            reference.document(pm.getMaPM() + "").set(map, SetOptions.merge());
-
-            //Cập nhật lại listView
-            getAllPhieuMuon(getContext());
-        }catch (Exception e){
-            Toast.makeText(getContext(), "Error: "+ e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
-    }
-
-
     //Dialog thêm phiếu mượn
 
     private void dialog_themLoaiSach() {
-        final String[] masach = new String[1];
+        final Integer[] masach = new Integer[1];
         final String[] maTT = new String[1];
-        final String[] maTV = new String[1];
+        final Integer[] maTV = new Integer[1];
 
         dialog_themPhieuMuon = new Dialog(getContext());
         dialog_themPhieuMuon.setContentView(R.layout.dialog_themphieumuon);
 
-        edt_maPhieuMuon = dialog_themPhieuMuon.findViewById(R.id.edt_dialogMaPMThemPM);
         edt_thue = dialog_themPhieuMuon.findViewById(R.id.edt_dialogThueThemPM);
-        edt_maPhieuMuon.setEnabled(false);
-        edt_thue.setEnabled(false);
         sp_maSach = dialog_themPhieuMuon.findViewById(R.id.sp_maSachThemPM);
         sp_maTT = dialog_themPhieuMuon.findViewById(R.id.sp_maTTThemPM);
         spmaTV = dialog_themPhieuMuon.findViewById(R.id.sp_maTVThemPM);
@@ -335,17 +326,27 @@ public class FragPhieuMuon extends Fragment {
         btn_dialogSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), masach[0] + " " + maTT[0] + " " + maTV[0], Toast.LENGTH_LONG).show();
+                //Toast.makeText(getContext(), masach[0] + " " + maTT[0] + " " + maTV[0], Toast.LENGTH_LONG).show();
+                Random random = new Random();
+                int numRandom = random.nextInt(20000) + 1;
+                int tienThue = Integer.parseInt(edt_thue.getText().toString());
+
+                phieuMuon = new PhieuMuon(numRandom, masach[0], maTV[0], 0, tienThue, maTT[0], "");
+                themPhieuMuon(phieuMuon);
             }
         });
 
 
         //spinner mã sách
         masach[0] = listMaSach.get(0);
+        //Lấy giá sách
+        getGiaSach(masach[0]);
         sp_maSach.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 masach[0] = listMaSach.get(position);
+
+                getGiaSach(masach[0]);
             }
 
             @Override
@@ -388,7 +389,7 @@ public class FragPhieuMuon extends Fragment {
 
         dialog_themPhieuMuon.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         int width = (int) (getResources().getDisplayMetrics().widthPixels * 0.8);
-        int height = (int) (getResources().getDisplayMetrics().heightPixels * 0.7);
+        int height = (int) (getResources().getDisplayMetrics().heightPixels * 0.6);
         dialog_themPhieuMuon.getWindow().setLayout(width, height);
 
         dialog_themPhieuMuon.show();
@@ -408,7 +409,7 @@ public class FragPhieuMuon extends Fragment {
                     if(task.isSuccessful()){
                         QuerySnapshot snapshot = task.getResult();
                         for(QueryDocumentSnapshot doc: snapshot){
-                            String MaSach = doc.get("MaSach").toString();
+                            int MaSach = Integer.parseInt(doc.get("MaSach").toString());
                             listMaSach.add(MaSach);
                         }
                     }else{
@@ -463,7 +464,7 @@ public class FragPhieuMuon extends Fragment {
                     if(task.isSuccessful()){
                         QuerySnapshot snapshot = task.getResult();
                         for(QueryDocumentSnapshot doc: snapshot){
-                            String MaTV = doc.get("MaTV").toString();
+                            int MaTV = Integer.parseInt(doc.get("MaTV").toString());
                             listMaTV.add(MaTV);
                         }
 
@@ -481,7 +482,7 @@ public class FragPhieuMuon extends Fragment {
     // set Adapter list lên spinner
     private void setListAdapterSpinner(){
         //Spinner thành viên
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
+        ArrayAdapter<Integer> adapter = new ArrayAdapter<Integer>(getContext(),
                 android.R.layout.simple_list_item_1, listMaTV);
         // Layout for All ROWs of Spinner.  (Optional for ArrayAdapter).
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -496,71 +497,65 @@ public class FragPhieuMuon extends Fragment {
 
 
         //Sinner mã sách
-        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(getContext(),
+        ArrayAdapter<Integer> adapter2 = new ArrayAdapter<Integer>(getContext(),
                 android.R.layout.simple_list_item_1, listMaSach);
         // Layout for All ROWs of Spinner.  (Optional for ArrayAdapter).
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sp_maSach.setAdapter(adapter2);
     }
 
-    //Lấy dữ liệu từ Spinner xuống  MÃ THỦ THƯ
-    private String getMaTTSpinner(){
-        Log.d("========>", listMaTV.toString() + " " +listMaTV.size());
-
-        final String[] kq = new String[1];
-        kq[0] = listMaTT.get(0);
-        sp_maTT.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+    //Lấy giá sách từ mã sách
+    private void getGiaSach(int maSach){
+        DocumentReference docRef = db.collection("Sach").document(maSach+"");
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                kq[0] = listMaTT.get(position);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-        return kq[0];
-    };
-
-    //Lấy dữ liệu từ Spinner xuống  MÃ SÁCH
-    private String getMaSachSpinner(){
-        final String[] kq = new String[1];
-        kq[0] = listMaSach.get(0);
-        sp_maSach.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                kq[0] = listMaSach.get(position);
-//                Log.d("====>", listMaSach.get(position));
-//                Toast.makeText(getContext(), "Nè", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document != null) {
+                        edt_thue.setText(document.get("GiaThue").toString());
+                    } else {
+                        Log.d("LOGGER", "No such document");
+                    }
+                } else {
+                    Log.d("LOGGER", "get failed with ", task.getException());
+                }
             }
         });
-        return kq[0];
-    };
+    }
 
+    /// Theem phie muon
+    private void themPhieuMuon(PhieuMuon pm){
 
-    //Lấy dữ liệu từ Spinner xuống  MÃ SÁCH
-    private String getMaTVSpinner(){
-        final String[] kq = new String[1];
-        kq[0] = listMaTV.get(0);
-        spmaTV.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                kq[0] = listMaTV.get(position);
-            }
+        //creating collection reference
+        //for our Firebase FireStore database
+        final CollectionReference collectionReference = db.collection("PHIEUMUON");
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("MaPM", pm.getMaPM());
+        data.put("MaSach", pm.getMaSach());
+        data.put("MaTT", pm.getMaTT());
+        data.put("MaTV", pm.getMaTV());
+        data.put("Ngay", FieldValue.serverTimestamp());
+        data.put("TienThue", pm.getTienThue());
+        data.put("TraSach", 0);
 
-            }
-        });
-        return kq[0];
-    };
+        try {
+            collectionReference.document(pm.getMaPM() + "").set(data);
+            Toast.makeText(getContext(), "Thêm phiếu mượn thành công", Toast.LENGTH_SHORT).show();
+            dialog_themPhieuMuon.dismiss();
+            getAllPhieuMuon(getContext());
+        }catch (Exception e){
+            Log.d("Error_addTVFirebase", e.getMessage());
+        }
 
+    }
+
+    //Ẩn tác vụ cho từng người dùng
+    private void hide_quyen(){
+        if(Quyen == 3) {
+            floatingActionButton.setVisibility(View.GONE);
+        }
+    }
 
 }
