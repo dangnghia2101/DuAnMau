@@ -101,9 +101,6 @@ public class FragmentLoaiSach extends Fragment {
 
         getAllLoaiSach(getContext());
 
-        //Kéo trượt swipemenulistview
-        createSwipeMenu();
-
         //Event click swipemenu
         swipeMenuListView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
             @Override
@@ -378,6 +375,9 @@ public class FragmentLoaiSach extends Fragment {
     private void hide_quyen(){
         if(Quyen == 3) {
             floatingActionButton.setVisibility(View.GONE);
+        }else{
+            //Kéo trượt swipemenulistview
+            createSwipeMenu();
         }
     }
 

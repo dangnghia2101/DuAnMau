@@ -114,7 +114,7 @@ public class FragmentDoiMatKhau extends Fragment {
                 String mk1 = edtMk1.getEditText().getText().toString();
                 String mk2 = edtMk2.getEditText().getText().toString();
 
-                if(mk1.isEmpty() || mk2.isEmpty()){
+                if(!kiemLoi(mk1).isEmpty() || !kiemLoi(mk2).isEmpty()){
                     Toast.makeText(getContext(), "Không được để trống", Toast.LENGTH_SHORT).show();
                 }else if(mk1.equals(mk2)){
                     Intent intent = getActivity().getIntent();
@@ -274,5 +274,24 @@ public class FragmentDoiMatKhau extends Fragment {
         edit.commit();
     }
 
+    //Kiểm lỗi mật khẩu
+    private String kiemLoi(String mk){
+        String error="";
+        Boolean hoa = true, thuong = true, so = true;
+        if(mk.length()<8) error = "Mật khẩu quá ngắn";
+
+        for(int i=0; i<mk.length();i++){
+            int ascii = (int) mk.charAt(0);
+            if(ascii > 64 && ascii < 91) hoa = false;
+            if(ascii > 96 && ascii < 123) thuong = false;
+            if(ascii > 47 && ascii < 58) so = false;
+        }
+
+        if(hoa) error += " thiếu kí tự hoa";
+        if(thuong) error += " thiếu kí tự hoa";
+        if(so) error += " thiếu kí tự hoa";
+
+        return error;
+    }
 
 }

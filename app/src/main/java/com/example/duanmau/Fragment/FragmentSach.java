@@ -137,9 +137,6 @@ public class FragmentSach extends Fragment {
         });
 
         //Lấy danh sách sách từ firebase xuống
-        //getAllSach(getContext());
-
-        createSwipeMenu();
 
         //Event clock swipemenu
         swipeMenuListView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
@@ -404,6 +401,8 @@ public class FragmentSach extends Fragment {
     private void hide_quyen(){
         if(Quyen == 3) {
             floatingActionButton.setVisibility(View.GONE);
+        }else{
+            createSwipeMenu();
         }
     }
 

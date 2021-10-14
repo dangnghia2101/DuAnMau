@@ -1,6 +1,6 @@
 package com.example.duanmau.Model;
 
-public class Sach {
+public class Sach{
     private int MaSach;
     private String MaLoai;
     private String TenSach;
@@ -64,4 +64,6 @@ public class Sach {
     public void setAvatar(String avatar) {
         Avatar = avatar;
     }
+
+
 }

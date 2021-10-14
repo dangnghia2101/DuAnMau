@@ -59,6 +59,7 @@ import com.google.firebase.storage.StorageReference;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -75,13 +76,18 @@ public class FragPhieuMuon extends Fragment {
     private Button btn_dialogSubmit;
     private TextView edt_thue;
 
+
     //List load to spinner
     private List<Integer> listMaSach;
+    private List<Integer> listSLSach;
     private List<String> listMaTT;
     private List<Integer> listMaTV;
 
     // Quyền của người đăng nhập được sử dụng chức năng gì
     private int Quyen = 3;
+
+    //Người dùng đang chọn vị trí spinner mã sách thứ mấy, để kiểm tra sl sách trong thư viện
+    private int click_maSach = 0;
 
     //Firestore
     FirebaseFirestore db;
@@ -90,7 +96,6 @@ public class FragPhieuMuon extends Fragment {
 
     PhieuMuon phieuMuon;
     View view;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -120,7 +125,7 @@ public class FragPhieuMuon extends Fragment {
             public void onClick(View v) {
 
                 //Cách 2
-                dialog_themLoaiSach();
+                dialog_themPhieuMuon();
             }
         });
 
@@ -134,7 +139,7 @@ public class FragPhieuMuon extends Fragment {
             public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
                 switch (index){
                     case 0:
-                        dialog_traSach(list.get(position).getMaPM()+"");
+                        dialog_traSach(list.get(position).getMaPM()+"", list.get(position).getMaSach());
                         break;
                     case 1:
 
@@ -161,7 +166,7 @@ public class FragPhieuMuon extends Fragment {
         createSwipeMenu();
     }
 
-    private void dialog_traSach(String MaPM){
+    private void dialog_traSach(String MaPM, int maSach){
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Thông báo")
                 .setMessage("Bạn chắn chắn muốn trả sách không?")
@@ -171,6 +176,7 @@ public class FragPhieuMuon extends Fragment {
                         try {
                             Toast.makeText(getContext(), "Đã trả sách", Toast.LENGTH_SHORT).show();
                             db.collection("PHIEUMUON").document(MaPM).update("TraSach", 1);
+                            updateSach(1, maSach);
                             getAllPhieuMuon(getContext());
                         }catch (Exception e){
                             Toast.makeText(getContext(), "Không đổi được mật khẩu, lỗi "+ e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -268,6 +274,7 @@ public class FragPhieuMuon extends Fragment {
                     }
                 }catch (Exception e){
                     Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.d("Erroout", e.getMessage());
                 }
             }
         });
@@ -303,7 +310,7 @@ public class FragPhieuMuon extends Fragment {
 
     //Dialog thêm phiếu mượn
 
-    private void dialog_themLoaiSach() {
+    private void dialog_themPhieuMuon() {
         final Integer[] masach = new Integer[1];
         final String[] maTT = new String[1];
         final Integer[] maTV = new Integer[1];
@@ -332,7 +339,8 @@ public class FragPhieuMuon extends Fragment {
                 int tienThue = Integer.parseInt(edt_thue.getText().toString());
 
                 phieuMuon = new PhieuMuon(numRandom, masach[0], maTV[0], 0, tienThue, maTT[0], "");
-                themPhieuMuon(phieuMuon);
+                //Kiểm tra thành viên này có mượn cuốn sách nào chưa
+                check_phieuMuonTonTai(phieuMuon.getMaTV(), phieuMuon.getMaSach());
             }
         });
 
@@ -345,8 +353,10 @@ public class FragPhieuMuon extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 masach[0] = listMaSach.get(position);
-
                 getGiaSach(masach[0]);
+
+                //Gán vị trí cho biến để lấy ra số lượng của sách
+                click_maSach = position;
             }
 
             @Override
@@ -384,9 +394,6 @@ public class FragPhieuMuon extends Fragment {
         });
 
 
-
-
-
         dialog_themPhieuMuon.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         int width = (int) (getResources().getDisplayMetrics().widthPixels * 0.8);
         int height = (int) (getResources().getDisplayMetrics().heightPixels * 0.6);
@@ -395,10 +402,49 @@ public class FragPhieuMuon extends Fragment {
         dialog_themPhieuMuon.show();
     }
 
+    //Kiểm tra người dùng đã mượn cuốn sách nào chưa
+    private void check_phieuMuonTonTai(int _maTV, int _maSach){
+
+        //Kiểm tra còn sách trong thư viện không
+        if(listSLSach.get(click_maSach) <= 0){
+            Toast.makeText(getContext(), "Xin lỗi, sách trong thư viện đã hết. Vui lòng chọn sách khác", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        final CollectionReference reference = db.collection("PHIEUMUON");
+
+        reference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                try {
+                    if(task.isSuccessful()){
+                        QuerySnapshot snapshot = task.getResult();
+                        for(QueryDocumentSnapshot doc: snapshot){
+                            int MaTV = Integer.parseInt(doc.get("MaTV").toString());
+                            int MaSach = Integer.parseInt(doc.get("MaSach").toString());
+
+                            if(_maSach == MaSach && _maTV == MaTV){
+                                Toast.makeText(getContext(), "Thành viên này đã mượn một cuốn tương tự", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+                        }
+                        themPhieuMuon(phieuMuon);
+                    }else{
+                        Toast.makeText(getContext(), "Kiểm tra kết nối mạng của bạn. Lỗi "+ task.getException(), Toast.LENGTH_SHORT).show();
+                    }
+                }catch (Exception e){
+                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        return;
+    }
+
 
     private void setMaSachToSpiner(){
 
         listMaSach = new ArrayList<>();
+        listSLSach = new ArrayList<>();
 
         final CollectionReference reference = db.collection("Sach");
 
@@ -410,7 +456,9 @@ public class FragPhieuMuon extends Fragment {
                         QuerySnapshot snapshot = task.getResult();
                         for(QueryDocumentSnapshot doc: snapshot){
                             int MaSach = Integer.parseInt(doc.get("MaSach").toString());
+                            int SoLuong = Integer.parseInt(doc.get("SoLuong").toString());
                             listMaSach.add(MaSach);
+                            listSLSach.add(SoLuong);
                         }
                     }else{
                         Toast.makeText(getContext(), "Kiểm tra kết nối mạng của bạn. Lỗi "+ task.getException(), Toast.LENGTH_SHORT).show();
@@ -540,15 +588,45 @@ public class FragPhieuMuon extends Fragment {
         data.put("TienThue", pm.getTienThue());
         data.put("TraSach", 0);
 
+        updateSach(-1, pm.getMaSach());
         try {
-            collectionReference.document(pm.getMaPM() + "").set(data);
-            Toast.makeText(getContext(), "Thêm phiếu mượn thành công", Toast.LENGTH_SHORT).show();
+            collectionReference.document(pm.getMaPM() + "").set(data).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    getAllPhieuMuon(getContext());
+                    Toast.makeText(getContext(), "Thêm phiếu mượn thành công", Toast.LENGTH_SHORT).show();
+                    setMaSachToSpiner();
+                }
+            });
+
             dialog_themPhieuMuon.dismiss();
-            getAllPhieuMuon(getContext());
+
         }catch (Exception e){
             Log.d("Error_addTVFirebase", e.getMessage());
         }
 
+    }
+
+    //Cập nhật số lượng sách sách trong database sách
+    private void updateSach(int bien, int maSach){
+        DocumentReference docRef = db.collection("Sach").document(maSach+"");
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        int soLuong = Integer.parseInt(document.get("SoLuong").toString());
+                        //Cập nhật lại số lượng sách
+                        db.collection("Sach").document(maSach+"").update("SoLuong", soLuong+bien);
+                    } else {
+                        Log.d("TAG", "No such document");
+                    }
+                } else {
+                    Log.d("TAG", "get failed with ", task.getException());
+                }
+            }
+        });
     }
 
     //Ẩn tác vụ cho từng người dùng
@@ -557,5 +635,6 @@ public class FragPhieuMuon extends Fragment {
             floatingActionButton.setVisibility(View.GONE);
         }
     }
+
 
 }

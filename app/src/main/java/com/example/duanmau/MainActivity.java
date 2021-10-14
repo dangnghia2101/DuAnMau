@@ -18,9 +18,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.duanmau.Fragment.FragPhieuMuon;
+import com.example.duanmau.Fragment.FragmenDt1top10;
 import com.example.duanmau.Fragment.FragmentDoanhThu;
 import com.example.duanmau.Fragment.FragmentDoiMatKhau;
 import com.example.duanmau.Fragment.FragmentLoaiSach;
+import com.example.duanmau.Fragment.FragmentPhieuMuonTV;
 import com.example.duanmau.Fragment.FragmentSach;
 import com.example.duanmau.Fragment.FragmentThanhVien;
 import com.example.duanmau.Fragment.FragmentTrangChinh;
@@ -80,8 +82,16 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.nav_TrangChinh_fragment, new FragPhieuMuon()).commit();
-        navigationView.setCheckedItem(R.id.nav_PhieuMuon);
+        Intent intent = getIntent();
+        int quyen = intent.getIntExtra("Quyen", 3);
+
+        if(quyen==3) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.nav_TrangChinh_fragment, new FragmentPhieuMuonTV()).commit();
+            //navigationView.setCheckedItem(R.id.nav_ThemPhieuMuon);
+        }else if(quyen != 3){
+            getSupportFragmentManager().beginTransaction().replace(R.id.nav_TrangChinh_fragment, new FragPhieuMuon()).commit();
+            navigationView.setCheckedItem(R.id.nav_PhieuMuon);
+        }
 
         //Ánh xạ đến textView header,
         View headerView = navigationView.getHeaderView(0);
@@ -89,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
         imgAvatarNavigation = headerView.findViewById(R.id.imv_avaterNagigation);
 
         //lấy intent để đưa tên lên Header
-        Intent intent = getIntent();
+        //intent = getIntent();
         tvNameNavigation.setText(intent.getStringExtra("HoTen"));
         Picasso.get().load(intent.getStringExtra("Avatar")).into(imgAvatarNavigation);
 
@@ -113,6 +123,7 @@ public class MainActivity extends AppCompatActivity {
                         temp = new FragmentSach();
                         break;
                     case R.id.nav_Top10:
+                        temp = new FragmenDt1top10();
                         break;
                     case R.id.nav_DoanhThu:
                         temp = new FragmentDoanhThu();
@@ -127,10 +138,11 @@ public class MainActivity extends AppCompatActivity {
                         edit.clear();
                         edit.commit();
                         break;
+                    case R.id.nav_ThemPhieuMuon:
+                        temp = new FragmentPhieuMuonTV();
 
                 }
                 getSupportFragmentManager().beginTransaction().replace(R.id.nav_TrangChinh_fragment, temp).commit();
-
                 drawerLayout.closeDrawer(GravityCompat.START);
                 return false;
             }
@@ -142,10 +154,16 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = getIntent();
         int quyen = intent.getIntExtra("Quyen", 3);
 
+        Menu menu = navigationView.getMenu();
         if(quyen==3) {
-            Menu menu = navigationView.getMenu();
             menu.findItem(R.id.nav_DoanhThu).setVisible(false);
             menu.findItem(R.id.nav_ThanhVien).setVisible(false);
+            menu.findItem(R.id.nav_PhieuMuon).setVisible(false);
+
+        }
+        if(quyen == 1 || quyen == 2){
+            menu.findItem(R.id.nav_ThemPhieuMuon).setVisible(false);
+
         }
     }
 

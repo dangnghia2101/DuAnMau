@@ -6,6 +6,9 @@
         <item android:id="@+id/nav_PhieuMuon"
             android:title="Quản lý phiếu mượn"
             android:icon="@drawable/icon_home"/>
+        <item android:id="@+id/nav_ThemPhieuMuon"
+            android:title="Mượn sách"
+            android:icon="@drawable/icon_home"/>
         <item android:id="@+id/nav_LoaiSach"
             android:title="Quản lý loại sách"
             android:icon="@drawable/icon_loaisach"/>

@@ -158,32 +158,35 @@ public class FragmentThemSach extends Fragment {
                         if(imageFileName.isEmpty()){
                             Toast.makeText(getContext(), "Chưa thêm hình ảnh", Toast.LENGTH_SHORT).show();
                         }else {
-                            //THêm thành viên vô database
-                            sach = new Sach(maSach, maLoai, tenSach, soLuong, giaThue,"");
-
+                            try {
+                                //THêm thành viên vô database
+                                sach = new Sach(maSach, maLoai, tenSach, soLuong, giaThue, "");
 
 //                           Kiểm tra tài mã thành viên đã tồn tại chưa
-                            final CollectionReference reference = db.collection("Sach");
-                            reference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                    int check = 0;
-                                    if(task.isSuccessful()){
-                                        QuerySnapshot snapshot = task.getResult();
-                                        for(QueryDocumentSnapshot doc: snapshot){
-                                            if(String.valueOf(sach.getMaSach()).equals(doc.get("MaSach").toString())){
-                                                check = 1;
-                                                break;
+                                final CollectionReference reference = db.collection("Sach");
+                                reference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        int check = 0;
+                                        if (task.isSuccessful()) {
+                                            QuerySnapshot snapshot = task.getResult();
+                                            for (QueryDocumentSnapshot doc : snapshot) {
+                                                if (String.valueOf(sach.getMaSach()).equals(doc.get("MaSach").toString())) {
+                                                    check = 1;
+                                                    break;
+                                                }
                                             }
+                                            if (check == 0) {
+                                                uploadImageToFirebase(imageFileName, contenUri);
+                                                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_TrangChinh_fragment, new FragmentSach()).commit();
+                                            } else
+                                                Toast.makeText(getContext(), "Mã thành viên đã tồn tại", Toast.LENGTH_SHORT).show();
                                         }
-                                        if(check == 0){
-                                            uploadImageToFirebase(imageFileName, contenUri);
-                                            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_TrangChinh_fragment, new FragmentSach()).commit();
-                                        }else Toast.makeText(getContext(), "Mã thành viên đã tồn tại", Toast.LENGTH_SHORT).show();
                                     }
-                                }
-                            });
-
+                                });
+                            }catch (Exception e){
+                                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
 
                         }
                     }

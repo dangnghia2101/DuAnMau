@@ -25,7 +25,7 @@
         android:id="@+id/swlv_user"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="100dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -69,5 +69,29 @@
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="23dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView7">
+
+        <RadioButton
+            android:id="@+id/rbt_FragThanhVien"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:text="Thành viên"
+            />
+
+        <RadioButton
+            android:id="@+id/rbt_FragThuThu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Thủ thư" />
+    </RadioGroup>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

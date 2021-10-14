@@ -23,8 +23,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.baoyz.swipemenulistview.SwipeMenu;
@@ -68,6 +70,8 @@ public class FragmentThanhVien extends Fragment {
     EditText edt_dialogTenTV, edt_dialogNamSinhTV, edt_dialogMKTV;
     ImageButton imgBtn_dialogAvatarSuaTV;
     Button btn_dialogSendSuaTV;
+
+    private RadioButton rbn_thanhVien, rbn_thuThu;
 
     //Firestore
     FirebaseFirestore db;
@@ -126,6 +130,9 @@ public class FragmentThanhVien extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         floatingActionButton = view.findViewById(R.id.flbtn_addThanhVien);
+        rbn_thanhVien = view.findViewById(R.id.rbt_FragThanhVien);
+        rbn_thanhVien.setChecked(true);
+        rbn_thuThu = view.findViewById(R.id.rbt_FragThuThu);
 
         swipeMenuListView = view.findViewById(R.id.swlv_user);
 
@@ -141,7 +148,7 @@ public class FragmentThanhVien extends Fragment {
 
         list = new ArrayList<>();
         //Lấy danh sách từ Firebase xuống Swipeview
-        getAllThanhVien(getContext());
+        getAllThanhVien(getContext(), 3);
         createSwipeMenu();
 
         //Event click swipemenu
@@ -162,6 +169,33 @@ public class FragmentThanhVien extends Fragment {
             }
         });
 
+
+        Intent intent = getActivity().getIntent();
+
+        int quyen = intent.getIntExtra("Quyen",3);
+        if(quyen == 2){
+            floatingActionButton.setVisibility(View.GONE);
+        }
+
+        //Đổi danh sách xem
+        clickRadio_doiDS();
+    }
+
+    private void clickRadio_doiDS(){
+        rbn_thanhVien.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked) getAllThanhVien(getContext(), 3);
+
+            }
+        });
+
+        rbn_thuThu.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked) getAllThanhVien(getContext(), 2);
+            }
+        });
     }
 
     public void createSwipeMenu(){
@@ -209,7 +243,7 @@ public class FragmentThanhVien extends Fragment {
         swipeMenuListView.setMenuCreator(creator);
     }
 
-    public void getAllThanhVien(Context context){
+    public void getAllThanhVien(Context context, int _quyen){
         list = new ArrayList<>();
 
         final CollectionReference reference = db.collection("ThanhVien");
@@ -227,11 +261,14 @@ public class FragmentThanhVien extends Fragment {
                             String NamSinh = doc.get("NamSinh").toString();
                             String SDT = doc.get("SDT").toString();
                             String Avatar = doc.get("Avatar").toString();
+                            int Quyen = Integer.parseInt(doc.get("Quyen").toString());
 
                             thanhVien = new ThanhVien(MaTV, HoTen, NamSinh, SDT, Avatar, MatKhau);
-                            list.add(thanhVien);
 
-                            //Log.d("====>", doc.get("MaTV").toString() + doc.get("HoTen").toString());
+                            if(_quyen == 3 && Quyen == 3) list.add(thanhVien);
+
+                            if(_quyen == 2 && Quyen == 2) list.add(thanhVien);
+
                         }
                         ThanhVienAdapter adapter =new ThanhVienAdapter(context, list);
                         swipeMenuListView.setAdapter(adapter);
@@ -257,7 +294,7 @@ public class FragmentThanhVien extends Fragment {
                                 .delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
-                                getAllThanhVien(getContext());
+                                getAllThanhVien(getContext(),3);
                             }
                         });
 
@@ -286,7 +323,7 @@ public class FragmentThanhVien extends Fragment {
 
             dialog_suaThanhVien.dismiss();
             //Cập nhật lại listView
-            getAllThanhVien(getContext());
+            getAllThanhVien(getContext(), 3);
         }catch (Exception e){
             Toast.makeText(getContext(), "Error: "+ e.getMessage(), Toast.LENGTH_SHORT).show();
         }
