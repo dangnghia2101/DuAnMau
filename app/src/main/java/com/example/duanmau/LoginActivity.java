@@ -117,8 +117,6 @@ public class LoginActivity extends AppCompatActivity {
             edit.putString("USERNAME", u);
             edit.putString("PASSWORD", p);
             edit.putBoolean("STATUS", status);
-
-
         }
 
         //luu lai toan bo

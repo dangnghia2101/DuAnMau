@@ -91,7 +91,6 @@ public class FragPhieuMuon extends Fragment {
 
     //Firestore
     FirebaseFirestore db;
-    final CollectionReference reference = FirebaseFirestore.getInstance().collection("PHIEUMUON");
 
 
     PhieuMuon phieuMuon;
@@ -444,7 +443,6 @@ public class FragPhieuMuon extends Fragment {
     private void setMaSachToSpiner(){
 
         listMaSach = new ArrayList<>();
-        listSLSach = new ArrayList<>();
 
         final CollectionReference reference = db.collection("Sach");
 

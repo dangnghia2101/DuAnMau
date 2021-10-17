@@ -114,8 +114,10 @@ public class FragmentDoiMatKhau extends Fragment {
                 String mk1 = edtMk1.getEditText().getText().toString();
                 String mk2 = edtMk2.getEditText().getText().toString();
 
-                if(!kiemLoi(mk1).isEmpty() || !kiemLoi(mk2).isEmpty()){
-                    Toast.makeText(getContext(), "Không được để trống", Toast.LENGTH_SHORT).show();
+                if(!kiemLoi(mk1).isEmpty()){
+                    Toast.makeText(getContext(), kiemLoi(mk1), Toast.LENGTH_SHORT).show();
+                }else if(!kiemLoi(mk2).isEmpty()){
+                    Toast.makeText(getContext(), kiemLoi(mk2), Toast.LENGTH_SHORT).show();
                 }else if(mk1.equals(mk2)){
                     Intent intent = getActivity().getIntent();
                     mkNew = mk1;
@@ -249,7 +251,7 @@ public class FragmentDoiMatKhau extends Fragment {
     }
 
     //Thay đổi password
-    private void updatePass(String mk, String MaTV){
+        private void updatePass(String mk, String MaTV){
         try {
             db.collection("ThanhVien").document(MaTV).update("MatKhau", mk);
         }catch (Exception e){
@@ -281,15 +283,15 @@ public class FragmentDoiMatKhau extends Fragment {
         if(mk.length()<8) error = "Mật khẩu quá ngắn";
 
         for(int i=0; i<mk.length();i++){
-            int ascii = (int) mk.charAt(0);
+            int ascii = (int) mk.charAt(i);
             if(ascii > 64 && ascii < 91) hoa = false;
             if(ascii > 96 && ascii < 123) thuong = false;
             if(ascii > 47 && ascii < 58) so = false;
         }
 
-        if(hoa) error += " thiếu kí tự hoa";
-        if(thuong) error += " thiếu kí tự hoa";
-        if(so) error += " thiếu kí tự hoa";
+        if(hoa) error += " phải có chữ hoa";
+        if(thuong) error += " thiếu kí tự thường";
+        if(so) error += " phải có số";
 
         return error;
     }

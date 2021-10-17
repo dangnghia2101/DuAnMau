@@ -328,14 +328,14 @@ public class FragmentLoaiSach extends Fragment {
 
                     int check= 0;
                     for(LoaiSach ls: list){
-                        if(ls.getMaLoai().equalsIgnoreCase(loaiSach.getMaLoai())){
+                        if(ls.getMaLoai().equalsIgnoreCase(loaiSach.getMaLoai()) || ls.getTenLoai().equalsIgnoreCase(loaiSach.getTenLoai())){
                             check=1;
                             break;
                         }
                     }
 
                     if(check==1){
-                        Toast.makeText(getContext(), "Mã loại sách đã tồn tại", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Mã loại sách hoặc tên loại sách đã tồn tại", Toast.LENGTH_SHORT).show();
                     }else {
                         loaiSach = new LoaiSach(maLoai, tenLoai);
                         addLoaiSachToFireStore(loaiSach);

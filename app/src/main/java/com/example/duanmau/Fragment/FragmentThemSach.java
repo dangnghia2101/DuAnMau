@@ -171,7 +171,8 @@ public class FragmentThemSach extends Fragment {
                                         if (task.isSuccessful()) {
                                             QuerySnapshot snapshot = task.getResult();
                                             for (QueryDocumentSnapshot doc : snapshot) {
-                                                if (String.valueOf(sach.getMaSach()).equals(doc.get("MaSach").toString())) {
+                                                String tenSach = doc.get("TenSach").toString();
+                                                if (String.valueOf(sach.getMaSach()).equals(doc.get("MaSach").toString()) || tenSach.equalsIgnoreCase(sach.getTenSach())) {
                                                     check = 1;
                                                     break;
                                                 }
@@ -180,7 +181,7 @@ public class FragmentThemSach extends Fragment {
                                                 uploadImageToFirebase(imageFileName, contenUri);
                                                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.nav_TrangChinh_fragment, new FragmentSach()).commit();
                                             } else
-                                                Toast.makeText(getContext(), "Mã thành viên đã tồn tại", Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(getContext(), "Mã sách hoặc tên sách đã tồn tại", Toast.LENGTH_SHORT).show();
                                         }
                                     }
                                 });

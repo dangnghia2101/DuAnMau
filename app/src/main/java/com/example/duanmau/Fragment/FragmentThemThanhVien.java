@@ -111,7 +111,6 @@ public class FragmentThemThanhVien extends Fragment {
 
         anhxa();
 
-
         // Thoát màn hình thêm thành viên
         imgBtnExit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -173,8 +172,6 @@ public class FragmentThemThanhVien extends Fragment {
                                     }
                                 }
                             });
-
-
                         }
                     }
                 }catch (Exception e){
@@ -402,5 +399,7 @@ public class FragmentThemThanhVien extends Fragment {
                     }
                 });
     }
+
+
 
 }
