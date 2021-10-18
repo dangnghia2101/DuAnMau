@@ -41,7 +41,8 @@
         android:layout_marginEnd="30dp"
         android:layout_marginBottom="30dp"
         android:clickable="true"
-        android:src="@drawable/icon_adduser"
+        android:backgroundTint="#03A9F4"
+        android:src="@drawable/icon_add"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -81,6 +82,7 @@
 
         <RadioButton
             android:id="@+id/rbt_FragThanhVien"
+            android:indeterminateTint="@color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="20dp"
@@ -89,6 +91,7 @@
 
         <RadioButton
             android:id="@+id/rbt_FragThuThu"
+            android:indeterminateTint="@color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Thủ thư" />

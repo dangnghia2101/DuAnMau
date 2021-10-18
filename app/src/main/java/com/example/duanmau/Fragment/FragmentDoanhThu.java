@@ -29,11 +29,13 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.DateFormat;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 
 public class FragmentDoanhThu extends Fragment {
@@ -151,12 +153,13 @@ public class FragmentDoanhThu extends Fragment {
                         QuerySnapshot snapshot = task.getResult();
                         for(QueryDocumentSnapshot doc: snapshot){
                             int TienThue = Integer.parseInt(doc.get("TienThue").toString());
+                            int TraSach = Integer.parseInt(doc.get("TraSach").toString());
                             Timestamp ngay = (Timestamp) doc.get("Ngay");
 
                             DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
                             String ngayMuon = format.format(ngay.toDate());
 
-                            getDoanhThu(ngayDau, ngayCuoi, ngayMuon, TienThue);
+                            if (TraSach == 1) getDoanhThu(ngayDau, ngayCuoi, ngayMuon, TienThue);
                         }
 
                     }else{
@@ -173,7 +176,16 @@ public class FragmentDoanhThu extends Fragment {
         if(dFire.compareTo(d2) < 0 && dFire.compareTo(d1)>0) {
             tongDoanhThu += tienThue;
         }
-        tv_doanhThu.setText(tongDoanhThu+"");
+        tv_doanhThu.setText(formatNumber(tongDoanhThu) + " VNĐ");
+    }
+
+    private String formatNumber(int number){
+        // tạo 1 NumberFormat để định dạng số theo tiêu chuẩn của nước Anh
+        Locale localeEN = new Locale("en", "EN");
+        NumberFormat en = NumberFormat.getInstance(localeEN);
+
+        return en.format(number);
     }
 }
+
 

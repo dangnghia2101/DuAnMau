@@ -25,6 +25,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -70,6 +71,7 @@ public class FragPhieuMuon extends Fragment {
     private SwipeMenuListView swipeMenuListView;
     public List<PhieuMuon> list;
     FloatingActionButton floatingActionButton;
+    private SearchView sv_pm;
 
     private Dialog dialog_themPhieuMuon;
     private Spinner sp_maSach, sp_maTT, spmaTV;
@@ -101,7 +103,6 @@ public class FragPhieuMuon extends Fragment {
         super.onCreate(savedInstanceState);
 
         db = FirebaseFirestore.getInstance();
-
     }
 
     @Override
@@ -117,7 +118,7 @@ public class FragPhieuMuon extends Fragment {
 
         swipeMenuListView = view.findViewById(R.id.swlv_phieuMuon);
         floatingActionButton = view.findViewById(R.id.flbtn_addPhieuMuon);
-
+        sv_pm = view.findViewById(R.id.sv_phieuMuon);
 
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -163,6 +164,40 @@ public class FragPhieuMuon extends Fragment {
 
         //Tạo kéo trượt listview
         createSwipeMenu();
+
+        //Tìm kiếm
+        search();
+    }
+
+    private void search(){
+        sv_pm.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                String text_search = sv_pm.getQuery()+"";
+                List<PhieuMuon> listPm = new ArrayList<>();
+
+                for(PhieuMuon pm: list){
+                    String maTV =String.valueOf(pm.getMaTV());
+                    String maSach =String.valueOf(pm.getMaSach());
+                    String maTT =String.valueOf(pm.getMaTT());
+
+                    if(text_search.contains(maTT) || text_search.contains(maTV)){
+                        listPm.add(pm);
+                    }
+                }
+
+                PhieuMuonAdapter adapter =new PhieuMuonAdapter(getContext(), listPm);
+                swipeMenuListView.setAdapter(adapter);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                PhieuMuonAdapter adapter =new PhieuMuonAdapter(getContext(), list);
+                swipeMenuListView.setAdapter(adapter);
+                return false;
+            }
+        });
     }
 
     private void dialog_traSach(String MaPM, int maSach){

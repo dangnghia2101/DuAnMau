@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +31,7 @@ public class LoginActivity extends AppCompatActivity {
     Button btnSubmit;
     CheckBox cb_luuTk;
     TextView txtQuyenTK;
+    ProgressBar progressBar;
 
     LoginDAO loginDAO;
     public FirebaseFirestore firestore;
@@ -58,6 +60,7 @@ public class LoginActivity extends AppCompatActivity {
                 if(username.isEmpty() || pass.isEmpty()){
                     Toast.makeText(LoginActivity.this, "Không được để trống", Toast.LENGTH_SHORT).show();
                 }else {
+                    progressBar.setVisibility(View.VISIBLE);
                     CheckAccount(username, pass);
                 }
             }
@@ -70,6 +73,7 @@ public class LoginActivity extends AppCompatActivity {
         btnSubmit = findViewById(R.id.btn_SubmitLogin);
         cb_luuTk = findViewById(R.id.cb_NhoTk);
         txtQuyenTK = findViewById(R.id.txtQuyenTK);
+        progressBar = findViewById(R.id.pb_login);
     }
 
     public void CheckAccount(String userName, String pass){

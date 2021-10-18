@@ -378,7 +378,9 @@ public class FragmentSach extends Fragment {
                     list.get(positon).setSoLuong(Integer.parseInt(soluongSach));
                     list.get(positon).setGiaThue(Integer.parseInt(giaSach));
 
-                    uploadImageToFirebase(imageFileName, contenUri);
+                    if(imageFileName.isEmpty()){
+                        updateFirebase(list.get(positon));
+                    }else uploadImageToFirebase(imageFileName, contenUri);
                 }
 
 

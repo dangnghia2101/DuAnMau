@@ -419,7 +419,10 @@ public class FragmentThanhVien extends Fragment {
                     list.get(positon).setNamSinh(namSinhTV);
                     list.get(positon).setMatKhau(matKhauTV);
 
-                    uploadImageToFirebase(imageFileName, contenUri);
+                    if(imageFileName.isEmpty()){
+                        updateFirebase(list.get(positon));
+                    }else uploadImageToFirebase(imageFileName, contenUri);
+
                 }
 
 

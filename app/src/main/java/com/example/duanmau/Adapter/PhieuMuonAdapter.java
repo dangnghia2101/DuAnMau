@@ -9,7 +9,9 @@ import android.widget.TextView;
 import com.example.duanmau.Model.PhieuMuon;
 import com.example.duanmau.R;
 
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class PhieuMuonAdapter extends BaseAdapter {
     private Context context;
@@ -73,7 +75,9 @@ public class PhieuMuonAdapter extends BaseAdapter {
         holder.tvMaTT.setText(pm.getMaTT());
         holder.tvMaTV.setText(pm.getMaTV()+"");
         holder.tvNgay.setText(pm.getNgay());
-        holder.tvTienThue.setText(pm.getTienThue()+"");
+
+
+        holder.tvTienThue.setText(formatNumber(pm.getTienThue()) +" VNĐ");
 
         if(pm.getTraSach()==1){
             holder.tvTraSach.setText("Đã trả");
@@ -81,5 +85,13 @@ public class PhieuMuonAdapter extends BaseAdapter {
 
 
         return view;
+    }
+
+    private String formatNumber(int number){
+        // tạo 1 NumberFormat để định dạng số theo tiêu chuẩn của nước Anh
+        Locale localeEN = new Locale("en", "EN");
+        NumberFormat en = NumberFormat.getInstance(localeEN);
+
+        return en.format(number);
     }
 }
