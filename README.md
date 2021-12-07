@@ -1,9 +1,5 @@
 # DUANMau
 ## QUẢN LÍ THƯ VIỆN
-<p align="center">
-<img src="https://user-images.githubusercontent.com/75264221/145009568-67fe0a9c-c5c8-4bdb-aacb-9c9917bf21b2.png" height="600" />
-</p>
-
 ### Dự án mẫu, dự án đầu tiên xây dựng một ứng dụng hoàn chỉnh
 ### Nền tảng triển khai
 #### Database - Firebase và language Java
